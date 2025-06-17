@@ -1,0 +1,5 @@
+<!ELEMENT clubes (club+)>
+<!ELEMENT club (nombre,pais)>
+<!ATTLIST club CIF CDATA #REQUIRED>
+<!ELEMENT pais (#PCDATA)>
+<!ELEMENT nombre (#PCDATA)>
