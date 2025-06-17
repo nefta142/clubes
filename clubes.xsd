@@ -9,6 +9,24 @@
             <xs:sequence>
               <xs:element name="nombre" type="xs:string"/>
               <xs:element name="pais" type="xs:string"/>
+              <xs:element name="color">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="rojo"/>
+                    <xs:enumeration value="blanco"/>
+                    <xs:enumeration value="negro"/>
+                    <xs:enumeration value="azul"/>
+                      <xs:enumeration value="ROJO"/>
+                    <xs:enumeration value="BLANCO"/>
+                    <xs:enumeration value="NEGRO"/>
+                    <xs:enumeration value="AZUL"/>
+                      <xs:enumeration value="Rojo"/>
+                    <xs:enumeration value="Blanco"/>
+                    <xs:enumeration value="Negro"/>
+                    <xs:enumeration value="Azul"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
             </xs:sequence>
             <xs:attribute name="CIF" use="required">
             <xs:simpleType>

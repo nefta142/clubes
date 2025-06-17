@@ -21,13 +21,14 @@
         </script>
       </head>
       <body>
-        <h2>Lista de Clubes</h2>
+        <h2>Clubes del Mundo</h2>
         <table id="tablaClubes" class="display">
           <thead>
             <tr>
               <th>CIF</th>
               <th>Nombre</th>
               <th>País</th>
+              <th>Color</th>
             </tr>
           </thead>
           <tbody>
@@ -36,6 +37,7 @@
                 <td><xsl:value-of select="@CIF" /></td>
                 <td><xsl:value-of select="nombre" /></td>
                 <td><xsl:value-of select="pais" /></td>
+                <td><xsl:value-of select="color"/></td>
               </tr>
             </xsl:for-each>
           </tbody>
