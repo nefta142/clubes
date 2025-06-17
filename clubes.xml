@@ -3,7 +3,7 @@
 <clubes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="clubes.xsd">
   <club CIF="5454PF">
     <nombre>Pachuca</nombre>
-    <pais>Mexico</pais>
+    <pais>México</pais>
     <color>blanco</color>
   </club>
   <club CIF="5423PF">

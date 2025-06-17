@@ -92,86 +92,79 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="UTF-8">
   <title>Gestión de Clubes</title>
-  <style>
-    body { font-family: sans-serif; padding: 20px; }
-    table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-    th { background-color: #f4f4f4; }
-    .mensaje { margin: 10px 0; font-weight: bold; color: green; }
-    .error { color: red; }
-    form label { display: inline-block; width: 120px; margin-top: 5px; }
-    form input, form select { margin-bottom: 10px; }
-  </style>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-light py-4">
 
-<h2><?= $modo_edicion ? 'Editar Club' : 'Agregar nuevo Club' ?></h2>
+<div class="container">
+  <h2 class="mb-4"><?= $modo_edicion ? 'Editar Club' : 'Agregar nuevo Club' ?></h2>
 
-<?php if ($mensaje): ?>
-  <p class="mensaje"><?= htmlspecialchars($mensaje) ?></p>
-<?php endif; ?>
+  <?php if ($mensaje): ?>
+    <div class="alert alert-info"><?= htmlspecialchars($mensaje) ?></div>
+  <?php endif; ?>
 
-<form method="post">
-  <input type="hidden" name="es_edicion" value="<?= $modo_edicion ? '1' : '' ?>">
-  <label>Nombre:</label>
-  <input type="text" name="nombre" value="<?= htmlspecialchars($datos_editar['nombre']) ?>" required><br>
+  <form method="post" class="border p-4 bg-white shadow-sm rounded">
+    <input type="hidden" name="es_edicion" value="<?= $modo_edicion ? '1' : '' ?>">
 
-  <label>País:</label>
-  <input type="text" name="pais" value="<?= htmlspecialchars($datos_editar['pais']) ?>" required><br>
+    <div class="mb-3">
+      <label class="form-label">Nombre:</label>
+      <input type="text" name="nombre" class="form-control" value="<?= htmlspecialchars($datos_editar['nombre']) ?>" required>
+    </div>
 
-  <label>Color:</label>
-  <select name="color" required>
-    <?php foreach (['rojo', 'blanco', 'negro', 'azul'] as $col): ?>
-      <option value="<?= $col ?>" <?= $datos_editar['color'] === $col ? 'selected' : '' ?>>
-        <?= ucfirst($col) ?>
-      </option>
-    <?php endforeach; ?>
-  </select><br>
+    <div class="mb-3">
+      <label class="form-label">País:</label>
+      <input type="text" name="pais" class="form-control" value="<?= htmlspecialchars($datos_editar['pais']) ?>" required>
+    </div>
 
-  <label>CIF:</label>
-  <input type="text" name="cif" value="<?= htmlspecialchars($datos_editar['cif']) ?>" pattern="\d{4}[A-Z]{2}" <?= $modo_edicion ? 'readonly' : 'required' ?>><br>
+    <div class="mb-3">
+      <label class="form-label">Color:</label>
+      <select name="color" class="form-select" required>
+        <?php foreach (['rojo', 'blanco', 'negro', 'azul'] as $col): ?>
+          <option value="<?= $col ?>" <?= $datos_editar['color'] === $col ? 'selected' : '' ?>><?= ucfirst($col) ?></option>
+        <?php endforeach; ?>
+      </select>
+    </div>
 
-  <input type="submit" value="<?= $modo_edicion ? 'Guardar Cambios' : 'Guardar Club' ?>">
-</form>
+    <div class="mb-3">
+      <label class="form-label">CIF:</label>
+      <input type="text" name="cif" class="form-control" value="<?= htmlspecialchars($datos_editar['cif']) ?>" pattern="\d{4}[A-Z]{2}" <?= $modo_edicion ? 'readonly' : 'required' ?>>
+    </div>
 
-<h2>Clubes registrados</h2>
+    <button type="submit" class="btn btn-primary"><?= $modo_edicion ? 'Guardar Cambios' : 'Guardar Club' ?></button>
+  </form>
 
-<?php
-if (file_exists($archivoXML)) {
-    $xml = simplexml_load_file($archivoXML);
-    if (count($xml->club) > 0): ?>
-        <table>
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>País</th>
-              <th>Color</th>
-              <th>CIF</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-          <?php foreach ($xml->club as $club): ?>
-            <tr>
-              <td><?= htmlspecialchars($club->nombre) ?></td>
-              <td><?= htmlspecialchars($club->pais) ?></td>
-              <td><?= htmlspecialchars($club->color) ?></td>
-              <td><?= htmlspecialchars($club['CIF']) ?></td>
-              <td>
-                <a href="?edit=<?= urlencode($club['CIF']) ?>"> Editar</a> |
-                <a href="?delete=<?= urlencode($club['CIF']) ?>" onclick="return confirm('¿Eliminar este club?')">Eliminar</a>
-              </td>
-            </tr>
-          <?php endforeach; ?>
-          </tbody>
-        </table>
-    <?php else: ?>
-        <p>No hay clubes registrados todavía.</p>
-    <?php endif;
-} else {
-    echo "<p>No se ha creado el archivo <code>clubes.xml</code> todavía.</p>";
-}
-?>
+  <h2 class="mt-5">Clubes Registrados</h2>
+
+  <?php if (file_exists($archivoXML) && count($xml = simplexml_load_file($archivoXML)->club) > 0): ?>
+    <table class="table table-bordered table-striped mt-3">
+      <thead class="table-light">
+        <tr>
+          <th>Nombre</th>
+          <th>País</th>
+          <th>Color</th>
+          <th>CIF</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach ($xml as $club): ?>
+          <tr>
+            <td><?= htmlspecialchars($club->nombre) ?></td>
+            <td><?= htmlspecialchars($club->pais) ?></td>
+            <td><?= htmlspecialchars($club->color) ?></td>
+            <td><?= htmlspecialchars($club['CIF']) ?></td>
+            <td>
+              <a href="?edit=<?= urlencode($club['CIF']) ?>" class="btn btn-sm btn-warning"> Editar</a>
+              <a href="?delete=<?= urlencode($club['CIF']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar este club?')"> Eliminar</a>
+            </td>
+          </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+  <?php else: ?>
+    <p class="text-muted">No hay clubes registrados todavía.</p>
+  <?php endif; ?>
+</div>
 
 </body>
 </html>
